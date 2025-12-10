@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub 博客展示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 0;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.7);
+            animation: fadeInDown 1s ease-out;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.3s both;
+            color: #cbd5e1;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .blog-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(2, 8, 20, 0.4);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.6s ease-out;
+            cursor: pointer;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(2, 132, 199, 0.25);
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .blog-title {
+            font-size: 1.5em;
+            color: #f1f5f9;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .blog-date {
+            color: #94a3b8;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .blog-date::before {
+            content: "📅";
+            margin-right: 5px;
+        }
+
+        .blog-description {
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .blog-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .tag:hover {
+            background: rgba(56, 189, 248, 0.3);
+            transform: scale(1.05);
+        }
+
+        .github-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(30, 41, 59, 0.7);
+            color: #e2e8f0;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(2, 8, 20, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            z-index: 100;
+        }
+
+        .github-link:hover {
+            transform: scale(1.05);
+            background: rgba(30, 41, 59, 0.9);
+            box-shadow: 0 6px 25px rgba(2, 132, 199, 0.4);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .github-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .type-cursor::after {
+            content: "|";
+            color: #38bdf8;
+            font-weight: 300;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="https://github.com/hxy-l" class="github-link" target="_blank">
+        <svg class="github-icon" viewBox="0 0 24 24">
+            <path
+                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+        </svg>
+        查看 GitHub
+    </a>
+
+    <div class="container">
+        <header>
+            <h1>欢迎访问小鱼的技术博客</h1>
+            <p class="subtitle">分享编程心得，记录成长历程</p>
+        </header>
+
+        <div class="blog-grid">
+            <div class="blog-card">
+                <h3 class="blog-title">深入理解 JavaScript 异步编程</h3>
+                <p class="blog-date">2024年1月15日</p>
+                <p class="blog-description">探索 JavaScript 中的异步编程模式，从回调函数到 Promise，再到 async/await 的演进历程...</p>
+                <div class="blog-tags">
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">异步编程</span>
+                    <span class="tag">前端</span>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <h3 class="blog-title">构建高性能的 React 应用</h3>
+                <p class="blog-date">2024年1月10日</p>
+                <p class="blog-description">分享 React 性能优化的最佳实践，包括虚拟 DOM 原理、组件优化策略和状态管理技巧...</p>
+                <div class="blog-tags">
+                    <span class="tag">React</span>
+                    <span class="tag">性能优化</span>
+                    <span class="tag">前端框架</span>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <h3 class="blog-title">Docker 容器化部署实战</h3>
+                <p class="blog-date">2024年1月5日</p>
+                <p class="blog-description">从零开始学习 Docker，掌握容器化部署的核心概念和实际应用，让你的应用部署更加便捷...</p>
+                <div class="blog-tags">
+                    <span class="tag">Docker</span>
+                    <span class="tag">DevOps</span>
+                    <span class="tag">部署</span>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <h3 class="blog-title">Git 高级技巧与最佳实践</h3>
+                <p class="blog-date">2023年12月28日</p>
+                <p class="blog-description">深入探讨 Git 的高级功能，包括交互式变基、子模块管理、工作流优化等实用技巧...</p>
+                <div class="blog-tags">
+                    <span class="tag">Git</span>
+                    <span class="tag">版本控制</span>
+                    <span class="tag">开发工具</span>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <h3 class="blog-title">微服务架构设计原则</h3>
+                <p class="blog-date">2023年12月20日</p>
+                <p class="blog-description">探讨微服务架构的核心设计原则，包括服务拆分、通信机制、数据一致性等关键问题...</p>
+                <div class="blog-tags">
+                    <span class="tag">微服务</span>
+                    <span class="tag">架构设计</span>
+                    <span class="tag">后端</span>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <h3 class="blog-title">TypeScript 进阶指南</h3>
+                <p class="blog-date">2023年12月15日</p>
+                <p class="blog-description">TypeScript 高级特性详解，包括泛型、装饰器、高级类型等，助你成为 TS 专家...</p>
+                <div class="blog-tags">
+                    <span class="tag">TypeScript</span>
+                    <span class="tag">类型系统</span>
+                    <span class="tag">前端</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        /* 简单打字机 */
+        function typeWriter(selector, speed = 80) {
+            return new Promise(resolve => {
+                const el = document.querySelector(selector);
+                if (!el) { resolve(); return; }
+                const txt = el.textContent;
+                el.textContent = "";
+                el.classList.add("type-cursor");
+                let i = 0;
+                const timer = setInterval(() => {
+                    el.textContent += txt[i++];
+                    if (i === txt.length) {
+                        clearInterval(timer);
+                        el.classList.remove("type-cursor");
+                        resolve();
+                    }
+                }, speed);
+            });
+        }
+
+        /* 顺序执行 */
+        (async () => {
+            await typeWriter("h1", 100);
+            await typeWriter(".subtitle", 70);
+            /* 博客卡片标题逐个出现 */
+            const cards = document.querySelectorAll(".blog-title");
+            for (const card of cards) {
+                await typeWriter(card, 60);
+            }
+        })();
+    </script>
+    <!-- ===== 打字机效果 end ===== -->
+</body>
+
+</html>
