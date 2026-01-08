@@ -165,10 +165,6 @@ function initSearchEngine() {
 
     // 搜索引擎映射和描述
     const engines = {
-        '站内搜索': {
-            url: 'https://example.com/search?q=',
-            desc: '搜索本站导航内容'
-        },
         '百度': {
             url: 'https://www.baidu.com/s?wd=',
             desc: '全球最大中文搜索引擎'
@@ -264,58 +260,6 @@ function initSearchEngine() {
         searchInput.value = safeQuery;
 
         if (safeQuery.trim()) {
-            if (currentEngine === '站内搜索') {
-                // 站内搜索：搜索导航区标题关键字并匹配跳转
-                const modules = document.querySelectorAll('.module');
-                const matchedModules = [];
-                const matchedCards = [];
-
-                // 转换查询为小写，用于模糊匹配
-                const lowerQuery = safeQuery.toLowerCase();
-
-                // 遍历所有模块，收集匹配的模块和卡片
-                modules.forEach(module => {
-                    // 检查模块标题是否匹配
-                    const moduleTitle = module.querySelector('.module-header h2').textContent;
-                    const isModuleMatch = moduleTitle.toLowerCase().includes(lowerQuery);
-
-                    if (isModuleMatch) {
-                        matchedModules.push(module);
-                    }
-
-                    // 检查模块内的导航卡片是否匹配
-                    const navCards = module.querySelectorAll('.nav-card');
-                    navCards.forEach(card => {
-                        const cardTitle = card.querySelector('.card-title').textContent;
-                        if (cardTitle.toLowerCase().includes(lowerQuery)) {
-                            matchedCards.push(card);
-                            // 如果卡片匹配，也将模块加入匹配列表
-                            if (!matchedModules.includes(module)) {
-                                matchedModules.push(module);
-                            }
-                        }
-                    });
-                });
-
-                if (matchedModules.length > 0) {
-                    // 找到匹配的模块，滚动到第一个匹配模块
-                    const firstMatchedModule = matchedModules[0];
-                    // 滚动到模块位置，减去顶部偏移量
-                    const offsetTop = firstMatchedModule.offsetTop - 100;
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-
-                    // 高亮显示所有匹配的卡片
-                    matchedCards.forEach(card => {
-                        card.style.boxShadow = '0 0 10px rgba(100, 181, 246, 0.5)';
-                        setTimeout(() => {
-                            card.style.boxShadow = '';
-                        }, 3000);
-                    });
-                }
-            } else {
                 // 原有搜索逻辑，为FreeBuf引擎添加特殊处理
                 let url;
                 if (currentEngine === 'Freebuf') {
@@ -325,7 +269,6 @@ function initSearchEngine() {
                     url = engines[currentEngine].url + encodeURIComponent(safeQuery);
                 }
                 window.open(url, '_blank');
-            }
         }
     }
 
