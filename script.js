@@ -212,6 +212,11 @@ function initSearchEngine() {
         '茶杯狐': {
             url: 'https://www.cupfox.ai/search/-------------.html?wd=',
             desc: '影视资源搜索'
+        },
+        'DuckDuckGo': {
+            url: 'https://duckduckgo.com/?q=',
+            desc: '注重隐私保护的搜索引擎'
+
         }
     };
 
