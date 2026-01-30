@@ -201,10 +201,6 @@ function initSearchEngine() {
             url: 'https://metaso.cn/?q=',
             desc: 'AI搜索引擎'
         },
-        'ZoomEy': {
-            url: 'https://www.zoomeye.org/searchResult?q=',
-            desc: '网络空间搜索引擎'
-        },
         '茶杯狐': {
             url: 'https://www.cupfox.ai/search/-------------.html?wd=',
             desc: '影视资源搜索'
@@ -212,7 +208,6 @@ function initSearchEngine() {
         'DuckDuckGo': {
             url: 'https://duckduckgo.com/?q=',
             desc: '注重隐私保护的搜索引擎'
-
         }
     };
 
