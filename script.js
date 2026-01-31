@@ -189,10 +189,6 @@ function initSearchEngine() {
             url: 'https://yandex.com/search/?text=',
             desc: '俄罗斯搜索引擎'
         },
-        'Freebuf': {
-            url: 'https://www.freebuf.com/search?search=',
-            desc: '网络安全资讯平台'
-        },
         'BiliBili': {
             url: 'https://search.bilibili.com/all?keyword=',
             desc: '哔哩哔哩弹幕视频网站'
